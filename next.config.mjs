@@ -1,5 +1,17 @@
 /** @type {import('next').NextConfig} */
+let authHost;
+try {
+  authHost = process.env.AUTH_URL ? new URL(process.env.AUTH_URL).host : undefined;
+} catch {
+  authHost = undefined;
+}
+
 const nextConfig = {
+  experimental: {
+    serverActions: {
+      allowedOrigins: authHost ? [authHost] : [],
+    },
+  },
   reactStrictMode: true,
   output: "standalone",
   serverExternalPackages: ["bcryptjs", "@prisma/client"],
